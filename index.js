@@ -5,13 +5,17 @@ fs.readFile(`${__dirname}/dog.txt`, (err, data) => {
   console.log(`Husky: ${data}`);
 
   superagent
-    .get(`https://dog.ceo/api/breeds/${data}/images/random`)
-    .end((err, res) => {
-      if (err) console.log(err.message);
+    .get(`https://dog.ceo/api/breeds/${data}/image/random`)
+    .then((res) => {
+      if (err) return console.log(err.message);
       console.log(res.body.message);
 
       fs.writeFile("dog-img.txt", res.body.message, (err) => {
-        console.log("random dog ");
+        if (err) return console.log(err.message);
+        console.log("Random dog");
       });
+    })
+    .catch((err) => {
+      console.log(err.message);
     });
 });
